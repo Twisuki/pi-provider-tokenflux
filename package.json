@@ -1,0 +1,31 @@
+{
+  "name": "pi-provider-tokenflux",
+  "type": "module",
+  "version": "1.0.0",
+  "packageManager": "pnpm@11.24.0",
+  "description": "",
+  "author": "",
+  "license": "MIT",
+  "keywords": [],
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky",
+    "check": "tsc --noEmit",
+    "lint": "eslint",
+    "fix": "eslint . --fix"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.24.0",
+      "onFail": "download"
+    }
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^9.5.1",
+    "eslint": "^10.9.1",
+    "eslint-plugin-format": "^2.0.1",
+    "husky": "^9.1.7",
+    "typescript": "^6.0.3"
+  }
+}
