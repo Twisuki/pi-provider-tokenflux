@@ -34,18 +34,21 @@ function isResponsesApi(api: Api): boolean {
 }
 
 function findBuiltinModel(id: string, ownedBy: string | undefined): Model<Api> | undefined {
-  if (ownedBy) {
-    const owned = BUILTIN.get(ownedBy)?.get(id)
+  const slashIdx = id.indexOf("/")
+  const modelId = slashIdx > 0 ? id.slice(slashIdx + 1) : id
+
+  if (slashIdx <= 0 && ownedBy) {
+    const owned = BUILTIN.get(ownedBy)?.get(modelId)
     if (owned) {
       return owned
     }
   }
-  const openai = BUILTIN.get("openai")?.get(id)
+  const openai = BUILTIN.get("openai")?.get(modelId)
   if (openai) {
     return openai
   }
   for (const byId of BUILTIN.values()) {
-    const found = byId.get(id)
+    const found = byId.get(modelId)
     if (found) {
       return found
     }

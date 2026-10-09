@@ -1,6 +1,5 @@
 export const SETTINGS_DIR = "extension-settings"
 export const CONFIG_FILE_NAME = "provider-tokenflux.json"
-export const MODELS_FILE_NAME = "tokenflux.json"
 export const SCHEMA_VERSION = 2
 
 export const COMMAND_ADD = "tf-provider-add"
