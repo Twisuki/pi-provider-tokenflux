@@ -1,7 +1,8 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent"
+import { COMMAND_ADD, COMMAND_LIST, COMMAND_REMOVE } from "./const.js"
 
 function registerAddCommand(pi: ExtensionAPI): void {
-  pi.registerCommand("tf-provider-add", {
+  pi.registerCommand(COMMAND_ADD, {
     description: "Add a TokenFlux provider.",
     handler: async (_args, ctx) => {
       // TODO: implement add flow (interactive baseUrl prompt, normalize, reachability check, persist)
@@ -11,7 +12,7 @@ function registerAddCommand(pi: ExtensionAPI): void {
 }
 
 function registerRemoveCommand(pi: ExtensionAPI): void {
-  pi.registerCommand("tf-provider-remove", {
+  pi.registerCommand(COMMAND_REMOVE, {
     description: "Remove a previously added TokenFlux provider.",
     handler: async (_args, ctx) => {
       // TODO: implement remove flow (prompt to /logout first, then unregister and clear persistence)
@@ -21,7 +22,7 @@ function registerRemoveCommand(pi: ExtensionAPI): void {
 }
 
 function registerListCommand(pi: ExtensionAPI): void {
-  pi.registerCommand("tf-provider-list", {
+  pi.registerCommand(COMMAND_LIST, {
     description: "List added TokenFlux providers with their current status.",
     handler: async (_args, ctx) => {
       // TODO: implement list flow (read config + catalog-store, print table)
