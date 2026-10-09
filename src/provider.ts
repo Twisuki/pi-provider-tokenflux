@@ -1,14 +1,7 @@
-import type { Provider } from "@earendil-works/pi-ai"
+import type { Model, Provider } from "@earendil-works/pi-ai"
 import { createProvider, envApiKeyAuth } from "@earendil-works/pi-ai"
 import { openAICompletionsApi } from "@earendil-works/pi-ai/api/openai-completions.lazy"
-import { TOKENFLUX_API_KEY_ENV, TOKENFLUX_BASE_URL } from "./const.js"
-
-export type ProviderMode = "simple" | "composite"
-
-export interface RefreshContext {
-  signal: AbortSignal
-  publish: (update: { update: Provider }) => void
-}
+import { REFRESH_TIMEOUT_MS, TOKENFLUX_API_KEY_ENV, TOKENFLUX_BASE_URL } from "./const.js"
 
 export function buildProvider(name: string, baseUrl: string = TOKENFLUX_BASE_URL): Provider<"openai-completions"> {
   const normalized = baseUrl.replace(/\/+$/, "")
@@ -21,19 +14,45 @@ export function buildProvider(name: string, baseUrl: string = TOKENFLUX_BASE_URL
     },
     models: [],
     api: openAICompletionsApi(),
+    fetchModels: async (context): Promise<readonly Model<"openai-completions">[]> => {
+      const credential = context.credential
+      if (!credential || credential.type !== "api_key" || !credential.key) {
+        return []
+      }
+      const controller = new AbortController()
+      const timer = setTimeout(() => controller.abort(), REFRESH_TIMEOUT_MS)
+      const signal = AbortSignal.any([context.signal, controller.signal])
+      try {
+        const res = await fetch(`${normalized}/v1/models`, {
+          headers: { Authorization: `Bearer ${credential.key}` },
+          signal,
+        })
+        if (!res.ok) {
+          return []
+        }
+        const data = await res.json() as { data?: Array<{ id: string }> }
+        if (!data.data) {
+          return []
+        }
+        return data.data.map(m => ({
+          id: m.id,
+          name: m.id,
+          api: "openai-completions",
+          provider: name,
+          baseUrl: `${normalized}/v1`,
+          input: ["text"],
+          reasoning: false,
+          cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+          contextWindow: 128000,
+          maxTokens: 16384,
+        }))
+      }
+      catch {
+        return []
+      }
+      finally {
+        clearTimeout(timer)
+      }
+    },
   })
-}
-
-// TODO: implement 15s-timeout fetch of /v1/models, map to pi Model shape, publish via context.publish, persist to catalog-store, swallow errors silently
-export async function refreshModels(
-  _context: RefreshContext,
-  _baseUrl: string,
-  _apiKey: string,
-): Promise<void> {
-  throw new Error("refreshModels: not implemented yet")
-}
-
-// TODO: return "composite" if any id contains "/", else "simple"
-export function detectMode(_models: ReadonlyArray<{ id: string }>): ProviderMode {
-  return "simple"
 }

@@ -1,7 +1,6 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent"
 import { emptyConfig, readConfig, writeConfig } from "./config.js"
 import { COMMAND_ADD, COMMAND_LIST, COMMAND_REMOVE, REACHABILITY_TIMEOUT_MS, TOKENFLUX_BASE_URL } from "./const.js"
-import { deleteModels, readModels } from "./models.js"
 import { buildProvider } from "./provider.js"
 import { checkReachable, hasCredential } from "./utils.js"
 
@@ -67,7 +66,6 @@ function registerRemoveCommand(pi: ExtensionAPI): void {
       config.providers = config.providers.filter(n => n !== name)
       writeConfig(config)
       pi.unregisterProvider(name)
-      deleteModels(name)
 
       ctx.ui.notify(`Provider "${name}" removed.`, "info")
     },
@@ -86,10 +84,7 @@ function registerListCommand(pi: ExtensionAPI): void {
 
       const lines = config.providers.map((name) => {
         const auth = hasCredential(name) ? "auth: true" : "auth: false"
-        const models = readModels(name)
-        const mode = models?.mode ?? "---"
-        const lastRefresh = models?.lastRefreshedAt ?? "---"
-        return `${name} | ${auth} | ${mode} | ${lastRefresh}`
+        return `${name} | ${auth}`
       })
       ctx.ui.notify(`TokenFlux providers (${config.providers.length}):\n${lines.join("\n")}`, "info")
     },
