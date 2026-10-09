@@ -1,7 +1,6 @@
 import type { Model, Provider } from "@earendil-works/pi-ai"
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent"
-import { createProvider, envApiKeyAuth } from "@earendil-works/pi-ai"
-import { openAICompletionsApi } from "@earendil-works/pi-ai/api/openai-completions.lazy"
+import { createProvider, envApiKeyAuth, openAICompletionsApi } from "@earendil-works/pi-ai/compat"
 import { readConfig } from "./config.js"
 import { REFRESH_TIMEOUT_MS, TOKENFLUX_API_KEY_ENV, TOKENFLUX_BASE_URL } from "./const.js"
 
