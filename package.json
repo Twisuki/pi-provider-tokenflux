@@ -1,13 +1,20 @@
 {
   "name": "pi-provider-tokenflux",
   "type": "module",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "packageManager": "pnpm@11.24.0",
-  "description": "",
-  "author": "",
+  "description": "pi provider extension for TokenFlux",
+  "author": "Twisuki",
   "license": "MIT",
-  "keywords": [],
-  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Twisuki/pi-provider-tokenflux.git"
+  },
+  "keywords": [
+    "pi-package",
+    "tokenflux"
+  ],
+  "main": "src/index.ts",
   "scripts": {
     "prepare": "husky",
     "check": "tsc --noEmit",
@@ -20,6 +27,15 @@
       "version": "11.24.0",
       "onFail": "download"
     }
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-ai": "*",
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "pi": {
+    "extensions": [
+      "./src/index.ts"
+    ]
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.5.1",
