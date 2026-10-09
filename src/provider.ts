@@ -1,3 +1,8 @@
+import type { Provider } from "@earendil-works/pi-ai"
+import { createProvider, envApiKeyAuth } from "@earendil-works/pi-ai"
+import { openAICompletionsApi } from "@earendil-works/pi-ai/api/openai-completions.lazy"
+import { TOKENFLUX_API_KEY_ENV, TOKENFLUX_BASE_URL } from "./const.js"
+
 export type ProviderMode = "simple" | "composite"
 
 export interface RefreshContext {
@@ -5,23 +10,30 @@ export interface RefreshContext {
   publish: (update: { update: Provider }) => void
 }
 
-export type Provider = unknown
-
-export function buildProvider(_name: string, _baseUrl: string): Provider {
-  // TODO: construct the real Provider, delegating stream to pi's built-in OpenAI Chat Completions
-  throw new Error("buildProvider: not implemented yet")
+export function buildProvider(name: string, baseUrl: string = TOKENFLUX_BASE_URL): Provider<"openai-completions"> {
+  const normalized = baseUrl.replace(/\/+$/, "")
+  return createProvider<"openai-completions">({
+    id: name,
+    name: `TokenFlux: ${name}`,
+    baseUrl: `${normalized}/v1`,
+    auth: {
+      apiKey: envApiKeyAuth("TokenFlux API key", [TOKENFLUX_API_KEY_ENV]),
+    },
+    models: [],
+    api: openAICompletionsApi(),
+  })
 }
 
+// TODO: implement 15s-timeout fetch of /v1/models, map to pi Model shape, publish via context.publish, persist to catalog-store, swallow errors silently
 export async function refreshModels(
   _context: RefreshContext,
   _baseUrl: string,
   _apiKey: string,
 ): Promise<void> {
-  // TODO: implement 15s-timeout fetch of /v1/models, map to pi Model shape, publish via context.publish, persist to catalog-store, swallow errors silently
   throw new Error("refreshModels: not implemented yet")
 }
 
+// TODO: return "composite" if any id contains "/", else "simple"
 export function detectMode(_models: ReadonlyArray<{ id: string }>): ProviderMode {
-  // TODO: return "composite" if any id contains "/", else "simple"
   return "simple"
 }

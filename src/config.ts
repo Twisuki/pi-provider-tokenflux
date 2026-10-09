@@ -4,13 +4,9 @@ import { getAgentDir } from "@earendil-works/pi-coding-agent"
 import { CONFIG_FILE_NAME, SCHEMA_VERSION, SETTINGS_DIR } from "./const.js"
 import { timestamp } from "./utils.js"
 
-export interface ProviderEntry {
-  baseUrl: string
-}
-
 export interface Config {
   version: number
-  providers: Record<string, ProviderEntry>
+  providers: string[]
 }
 
 function settingsPath(): string {
@@ -25,7 +21,7 @@ function backupCorrupt(filePath: string): void {
 }
 
 export function emptyConfig(): Config {
-  return { version: SCHEMA_VERSION, providers: {} }
+  return { version: SCHEMA_VERSION, providers: [] }
 }
 
 export function readConfig(): Config | null {
@@ -39,11 +35,11 @@ export function readConfig(): Config | null {
       backupCorrupt(path)
       return null
     }
-    if (typeof parsed.providers !== "object" || parsed.providers === null || Array.isArray(parsed.providers)) {
+    if (!Array.isArray(parsed.providers) || !parsed.providers.every(n => typeof n === "string")) {
       backupCorrupt(path)
       return null
     }
-    return { version: SCHEMA_VERSION, providers: parsed.providers as Record<string, ProviderEntry> }
+    return { version: SCHEMA_VERSION, providers: parsed.providers }
   }
   catch {
     backupCorrupt(path)
