@@ -1,6 +1,8 @@
 import type { Model, Provider } from "@earendil-works/pi-ai"
+import type { ExtensionAPI } from "@earendil-works/pi-coding-agent"
 import { createProvider, envApiKeyAuth } from "@earendil-works/pi-ai"
 import { openAICompletionsApi } from "@earendil-works/pi-ai/api/openai-completions.lazy"
+import { readConfig } from "./config.js"
 import { REFRESH_TIMEOUT_MS, TOKENFLUX_API_KEY_ENV, TOKENFLUX_BASE_URL } from "./const.js"
 
 export function buildProvider(name: string, baseUrl: string = TOKENFLUX_BASE_URL): Provider<"openai-completions"> {
@@ -55,4 +57,17 @@ export function buildProvider(name: string, baseUrl: string = TOKENFLUX_BASE_URL
       }
     },
   })
+}
+
+export function restoreProviders(pi: ExtensionAPI): void {
+  const config = readConfig()
+  if (!config || config.providers.length === 0) {
+    return
+  }
+  for (const name of config.providers) {
+    try {
+      pi.registerProvider(buildProvider(name))
+    }
+    catch {}
+  }
 }
