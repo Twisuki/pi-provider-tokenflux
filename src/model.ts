@@ -2,7 +2,7 @@ import type { Api, Model } from "@earendil-works/pi-ai"
 import { getBuiltinModels, getBuiltinProviders } from "@earendil-works/pi-ai/providers/all"
 import { DEFAULT_CONTEXT_WINDOW, DEFAULT_MAX_TOKENS, REFRESH_TIMEOUT_MS } from "./const.js"
 
-export type TokenFluxApi = "openai-completions" | "openai-responses"
+export type TokenFluxApi = "anthropic-messages" | "openai-completions" | "openai-responses"
 
 interface RawModel {
   id: string
@@ -29,8 +29,19 @@ for (const name of getBuiltinProviders()) {
   BUILTIN.set(name, byId)
 }
 
-function isResponsesApi(api: Api): boolean {
-  return api === "openai-responses" || api === "azure-openai-responses" || api === "openai-codex-responses"
+const API_MAP: Partial<Record<Api, TokenFluxApi>> = {
+  "anthropic-messages": "anthropic-messages",
+  "openai-responses": "openai-responses",
+  "azure-openai-responses": "openai-responses",
+  "openai-codex-responses": "openai-responses",
+}
+
+function toTokenFluxApi(api: Api): TokenFluxApi {
+  return API_MAP[api] ?? "openai-completions"
+}
+
+function apiBaseUrl(baseUrl: string, api: TokenFluxApi): string {
+  return api === "anthropic-messages" ? baseUrl : `${baseUrl}/v1`
 }
 
 function findBuiltinModel(id: string, ownedBy: string | undefined): Model<Api> | undefined {
@@ -73,7 +84,7 @@ function createModel(entry: RawModel, provider: string, baseUrl: string): Model<
       name: entry.id,
       api: "openai-completions",
       provider,
-      baseUrl: `${baseUrl}/v1`,
+      baseUrl: apiBaseUrl(baseUrl, "openai-completions"),
       input: ["text"],
       reasoning: false,
       cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
@@ -81,13 +92,13 @@ function createModel(entry: RawModel, provider: string, baseUrl: string): Model<
       maxTokens: DEFAULT_MAX_TOKENS,
     }
   }
-  const api: TokenFluxApi = isResponsesApi(builtin.api) ? "openai-responses" : "openai-completions"
+  const api = toTokenFluxApi(builtin.api)
   const compat = builtin.api === api ? builtin.compat : undefined
   return {
     ...builtin,
     id: entry.id,
     provider,
-    baseUrl: `${baseUrl}/v1`,
+    baseUrl: apiBaseUrl(baseUrl, api),
     api,
     compat: compat as Model<TokenFluxApi>["compat"],
   }

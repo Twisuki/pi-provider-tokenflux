@@ -1,7 +1,7 @@
 import type { Model, Provider } from "@earendil-works/pi-ai"
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent"
 import type { TokenFluxApi } from "./model.js"
-import { createProvider, envApiKeyAuth, openAICompletionsApi, openAIResponsesApi } from "@earendil-works/pi-ai/compat"
+import { anthropicMessagesApi, createProvider, envApiKeyAuth, openAICompletionsApi, openAIResponsesApi } from "@earendil-works/pi-ai/compat"
 import { readConfig } from "./config.js"
 import { TOKENFLUX_API_KEY_ENV, TOKENFLUX_BASE_URL } from "./const.js"
 import { fetchModels } from "./model.js"
@@ -17,6 +17,7 @@ export function buildProvider(name: string, baseUrl: string = TOKENFLUX_BASE_URL
     },
     models: [],
     api: {
+      "anthropic-messages": anthropicMessagesApi(),
       "openai-completions": openAICompletionsApi(),
       "openai-responses": openAIResponsesApi(),
     },
