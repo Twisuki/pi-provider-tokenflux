@@ -41,11 +41,11 @@ You can also supply your API key through the `TOKENFLUX_API_KEY` environment var
 
 ## Commands
 
-| Command                      | Description                                                                  |
-| ---------------------------- | ---------------------------------------------------------------------------- |
-| `/tf-provider-add [name]`    | Add a provider. Prompts for a name if omitted.                               |
-| `/tf-provider-list`          | List configured providers and their stored credential status.                |
-| `/tf-provider-remove <name>` | Remove a provider. Run `/logout <name>` first if it has a stored credential. |
+| Command                      | Description                                                           |
+| ---------------------------- | --------------------------------------------------------------------- |
+| `/tf-provider-add [name]`    | Add a provider. Prompts for a name if omitted.                        |
+| `/tf-provider-list`          | List configured providers and their stored credential status.         |
+| `/tf-provider-remove <name>` | Remove a provider. Run `/logout` first if it has a stored credential. |
 
 For bugs or suggestions, open a [GitHub issue](https://github.com/Twisuki/pi-provider-tokenflux/issues).
 

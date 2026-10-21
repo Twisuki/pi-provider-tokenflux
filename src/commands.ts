@@ -53,7 +53,7 @@ function registerRemoveCommand(pi: ExtensionAPI): void {
       }
 
       if (hasCredential(name)) {
-        ctx.ui.notify(`Provider "${name}" has a stored credential. Run /logout ${name} first.`, "error")
+        ctx.ui.notify(`Provider "${name}" has a stored credential. Run /logout first.`, "error")
         return
       }
 

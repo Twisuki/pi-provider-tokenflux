@@ -41,11 +41,11 @@ pi install git:github.com/Twisuki/pi-provider-tokenflux
 
 ## 命令
 
-| 命令                         | 说明                                                       |
-| ---------------------------- | ---------------------------------------------------------- |
-| `/tf-provider-add [name]`    | 添加 provider，省略名称时会提示输入。                      |
-| `/tf-provider-list`          | 列出已配置的 provider 及其凭据保存状态。                   |
-| `/tf-provider-remove <name>` | 移除 provider。如果已保存凭据，请先执行 `/logout <name>`。 |
+| 命令                         | 说明                                                |
+| ---------------------------- | --------------------------------------------------- |
+| `/tf-provider-add [name]`    | 添加 provider，省略名称时会提示输入。               |
+| `/tf-provider-list`          | 列出已配置的 provider 及其凭据保存状态。            |
+| `/tf-provider-remove <name>` | 移除 provider。如果已保存凭据，请先执行 `/logout`。 |
 
 如有问题或建议，请提交 [GitHub issue](https://github.com/Twisuki/pi-provider-tokenflux/issues)。
 
