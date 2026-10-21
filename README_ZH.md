@@ -49,6 +49,10 @@ pi install git:github.com/Twisuki/pi-provider-tokenflux
 
 如有问题或建议，请提交 [GitHub issue](https://github.com/Twisuki/pi-provider-tokenflux/issues)。
 
+## 更新日志
+
+[CHANGELOG.md](./CHANGELOG.md)
+
 ## 许可证
 
 [MIT](./LICENSE)

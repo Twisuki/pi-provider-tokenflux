@@ -49,6 +49,10 @@ You can also supply your API key through the `TOKENFLUX_API_KEY` environment var
 
 For bugs or suggestions, open a [GitHub issue](https://github.com/Twisuki/pi-provider-tokenflux/issues).
 
+## Changelog
+
+[CHANGELOG.md](./CHANGELOG.md)
+
 ## License
 
 [MIT](./LICENSE)
