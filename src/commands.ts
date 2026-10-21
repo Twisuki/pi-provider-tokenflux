@@ -1,21 +1,22 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent"
 import { emptyConfig, readConfig, writeConfig } from "./config.js"
-import { COMMAND_ADD, COMMAND_LIST, COMMAND_REMOVE, REACHABILITY_TIMEOUT_MS, TOKENFLUX_BASE_URL } from "./const.js"
+import { COMMAND_ADD, COMMAND_LIST, COMMAND_REMOVE, PROVIDER_ID_PREFIX, REACHABILITY_TIMEOUT_MS, TOKENFLUX_BASE_URL } from "./const.js"
 import { buildProvider } from "./provider.js"
 import { checkReachable, hasCredential } from "./utils.js"
 
 function registerAddCommand(pi: ExtensionAPI): void {
   pi.registerCommand(COMMAND_ADD, {
-    description: "Add a TokenFlux provider.",
+    description: "Add a TokenFlux provider (id is prefixed with tf-).",
     handler: async (args, ctx) => {
       const trimmedArgs = args.trim()
-      const name = trimmedArgs || await ctx.ui.input("Provider name:", "my-tokenflux")
+      const name = trimmedArgs || await ctx.ui.input("Provider name:", "demo")
       if (!name)
         return
+      const id = `${PROVIDER_ID_PREFIX}${name}`
 
       const existing = readConfig()
-      if (existing && existing.providers.includes(name)) {
-        ctx.ui.notify(`Provider "${name}" already exists.`, "error")
+      if (existing && existing.providers.includes(id)) {
+        ctx.ui.notify(`Provider "${id}" already exists.`, "error")
         return
       }
 
@@ -25,7 +26,7 @@ function registerAddCommand(pi: ExtensionAPI): void {
       }
 
       try {
-        const provider = buildProvider(name)
+        const provider = buildProvider(id)
         pi.registerProvider(provider)
       }
       catch (err) {
@@ -34,40 +35,40 @@ function registerAddCommand(pi: ExtensionAPI): void {
       }
 
       const config = readConfig() ?? emptyConfig()
-      config.providers.push(name)
+      config.providers.push(id)
       writeConfig(config)
 
-      ctx.ui.notify(`Provider "${name}" added. Run /login ${name} to authenticate.`, "info")
+      ctx.ui.notify(`Provider "${id}" added. Run /login ${id} to authenticate.`, "info")
     },
   })
 }
 
 function registerRemoveCommand(pi: ExtensionAPI): void {
   pi.registerCommand(COMMAND_REMOVE, {
-    description: "Remove a previously added TokenFlux provider.",
+    description: "Remove a TokenFlux provider.",
     handler: async (args, ctx) => {
-      const name = args.trim()
-      if (!name) {
-        ctx.ui.notify("Usage: /tf-provider-remove <name>", "warning")
+      const id = args.trim()
+      if (!id) {
+        ctx.ui.notify("Usage: /tf-provider-remove <id>", "warning")
         return
       }
 
-      if (hasCredential(name)) {
-        ctx.ui.notify(`Provider "${name}" has a stored credential. Run /logout first.`, "error")
+      if (hasCredential(id)) {
+        ctx.ui.notify(`Provider "${id}" has a stored credential. Run /logout first.`, "error")
         return
       }
 
       const config = readConfig()
-      if (!config || !config.providers.includes(name)) {
-        ctx.ui.notify(`Provider "${name}" not found.`, "error")
+      if (!config || !config.providers.includes(id)) {
+        ctx.ui.notify(`Provider "${id}" not found.`, "error")
         return
       }
 
-      config.providers = config.providers.filter(n => n !== name)
+      config.providers = config.providers.filter(n => n !== id)
       writeConfig(config)
-      pi.unregisterProvider(name)
+      pi.unregisterProvider(id)
 
-      ctx.ui.notify(`Provider "${name}" removed.`, "info")
+      ctx.ui.notify(`Provider "${id}" removed.`, "info")
     },
   })
 }
@@ -82,9 +83,9 @@ function registerListCommand(pi: ExtensionAPI): void {
         return
       }
 
-      const lines = config.providers.map((name) => {
-        const auth = hasCredential(name) ? "auth: true" : "auth: false"
-        return `${name} | ${auth}`
+      const lines = config.providers.map((id) => {
+        const auth = hasCredential(id) ? "auth: true" : "auth: false"
+        return `${id} | ${auth}`
       })
       ctx.ui.notify(`TokenFlux providers (${config.providers.length}):\n${lines.join("\n")}`, "info")
     },

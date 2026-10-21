@@ -1,6 +1,8 @@
 export const SETTINGS_DIR = "extension-settings"
 export const CONFIG_FILE_NAME = "provider-tokenflux.json"
-export const SCHEMA_VERSION = 2
+export const SCHEMA_VERSION = 3
+export const PROVIDER_ID_PREFIX = "tf-"
+export const PROVIDER_NAME_PREFIX = "TokenFlux: "
 
 export const COMMAND_ADD = "tf-provider-add"
 export const COMMAND_REMOVE = "tf-provider-remove"

@@ -31,21 +31,21 @@ pi install git:github.com/Twisuki/pi-provider-tokenflux
 启动 Pi，添加一个 provider，然后使用你的 [TokenFlux](https://tokenflux.dev/home) API key 登录：
 
 ```text
-/tf-provider-add my-tokenflux
-/login my-tokenflux
+/tf-provider-add demo
+/login tf-demo
 ```
 
-使用 `/model` 选择模型。认证后会自动从 TokenFlux 获取可用模型，已添加的 provider 会在 Pi 启动时恢复。
+该 provider 会注册为 `tf-demo`。使用 `/model` 选择模型。认证后会自动从 TokenFlux 获取可用模型，已添加的 provider 会在 Pi 启动时恢复。
 
 也可以通过 `TOKENFLUX_API_KEY` 环境变量提供 API key。添加不同名称的 provider 即可使用多个账号。
 
 ## 命令
 
-| 命令                         | 说明                                                |
-| ---------------------------- | --------------------------------------------------- |
-| `/tf-provider-add [name]`    | 添加 provider，省略名称时会提示输入。               |
-| `/tf-provider-list`          | 列出已配置的 provider 及其凭据保存状态。            |
-| `/tf-provider-remove <name>` | 移除 provider。如果已保存凭据，请先执行 `/logout`。 |
+| 命令                       | 说明                                                |
+| -------------------------- | --------------------------------------------------- |
+| `/tf-provider-add [name]`  | 添加 TokenFlux provider（id 会自动加上 tf- 前缀）。 |
+| `/tf-provider-list`        | 列出已添加的 TokenFlux provider 及其当前状态。      |
+| `/tf-provider-remove <id>` | 移除 TokenFlux provider。                           |
 
 如有问题或建议，请提交 [GitHub issue](https://github.com/Twisuki/pi-provider-tokenflux/issues)。
 

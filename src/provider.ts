@@ -3,14 +3,14 @@ import type { ExtensionAPI } from "@earendil-works/pi-coding-agent"
 import type { TokenFluxApi } from "./model.js"
 import { anthropicMessagesApi, createProvider, envApiKeyAuth, openAICompletionsApi, openAIResponsesApi } from "@earendil-works/pi-ai/compat"
 import { readConfig } from "./config.js"
-import { TOKENFLUX_API_KEY_ENV, TOKENFLUX_BASE_URL } from "./const.js"
+import { PROVIDER_ID_PREFIX, PROVIDER_NAME_PREFIX, TOKENFLUX_API_KEY_ENV, TOKENFLUX_BASE_URL } from "./const.js"
 import { fetchModels } from "./model.js"
 
-export function buildProvider(name: string, baseUrl: string = TOKENFLUX_BASE_URL): Provider<TokenFluxApi> {
+export function buildProvider(id: string, baseUrl: string = TOKENFLUX_BASE_URL): Provider<TokenFluxApi> {
   const normalized = baseUrl.replace(/\/+$/, "")
   return createProvider<TokenFluxApi>({
-    id: name,
-    name: `TokenFlux: ${name}`,
+    id,
+    name: `${PROVIDER_NAME_PREFIX}${id.slice(PROVIDER_ID_PREFIX.length)}`,
     baseUrl: `${normalized}/v1`,
     auth: {
       apiKey: envApiKeyAuth("TokenFlux API key", [TOKENFLUX_API_KEY_ENV]),
@@ -27,7 +27,7 @@ export function buildProvider(name: string, baseUrl: string = TOKENFLUX_BASE_URL
         return []
       }
       return fetchModels({
-        provider: name,
+        provider: id,
         baseUrl: normalized,
         apiKey: credential.key,
         signal: context.signal,
@@ -41,9 +41,9 @@ export function restoreProviders(pi: ExtensionAPI): void {
   if (!config || config.providers.length === 0) {
     return
   }
-  for (const name of config.providers) {
+  for (const id of config.providers) {
     try {
-      pi.registerProvider(buildProvider(name))
+      pi.registerProvider(buildProvider(id))
     }
     catch {}
   }

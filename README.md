@@ -31,21 +31,21 @@ pi install git:github.com/Twisuki/pi-provider-tokenflux
 Start Pi and add a provider, then log in with your [TokenFlux](https://tokenflux.dev/home) API key:
 
 ```text
-/tf-provider-add my-tokenflux
-/login my-tokenflux
+/tf-provider-add demo
+/login tf-demo
 ```
 
-Use `/model` to select a model. Available models are fetched from TokenFlux after authentication, and added providers are restored when Pi starts.
+This registers the provider as `tf-demo`. Use `/model` to select a model. Available models are fetched from TokenFlux after authentication, and added providers are restored when Pi starts.
 
 You can also supply your API key through the `TOKENFLUX_API_KEY` environment variable. Add providers with different names to use multiple accounts.
 
 ## Commands
 
-| Command                      | Description                                                           |
-| ---------------------------- | --------------------------------------------------------------------- |
-| `/tf-provider-add [name]`    | Add a provider. Prompts for a name if omitted.                        |
-| `/tf-provider-list`          | List configured providers and their stored credential status.         |
-| `/tf-provider-remove <name>` | Remove a provider. Run `/logout` first if it has a stored credential. |
+| Command                    | Description                                               |
+| -------------------------- | --------------------------------------------------------- |
+| `/tf-provider-add [name]`  | Add a TokenFlux provider (id is prefixed with tf-).       |
+| `/tf-provider-list`        | List added TokenFlux providers with their current status. |
+| `/tf-provider-remove <id>` | Remove a TokenFlux provider.                              |
 
 For bugs or suggestions, open a [GitHub issue](https://github.com/Twisuki/pi-provider-tokenflux/issues).
 
