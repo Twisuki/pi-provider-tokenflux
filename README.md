@@ -2,7 +2,7 @@
 
 # pi-provider-tokenflux
 
-Pi provider extension for [TokenFlux](https://tokenflux.dev/home)
+Pi provider extension for [TokenFlux](https://tokenflux.com/home)
 
 [![npm version](https://img.shields.io/npm/v/pi-provider-tokenflux)](https://www.npmjs.com/package/pi-provider-tokenflux)
 [![License](https://img.shields.io/github/license/Twisuki/pi-provider-tokenflux)](./LICENSE)
@@ -28,7 +28,7 @@ pi install git:github.com/Twisuki/pi-provider-tokenflux
 
 ## Quick Start
 
-Start Pi and add a provider, then log in with your [TokenFlux](https://tokenflux.dev/home) API key:
+Start Pi and add a provider, then log in with your [TokenFlux](https://tokenflux.com/home) API key:
 
 ```text
 /tf-provider-add demo

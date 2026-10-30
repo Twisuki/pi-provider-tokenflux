@@ -14,4 +14,4 @@ export const DEFAULT_MAX_TOKENS = 16384
 export const REACHABILITY_TIMEOUT_MS = 5000
 export const REFRESH_TIMEOUT_MS = 15000
 export const TOKENFLUX_API_KEY_ENV = "TOKENFLUX_API_KEY"
-export const TOKENFLUX_BASE_URL = "https://tokenflux.dev"
+export const TOKENFLUX_BASE_URL = "https://tokenflux.com"

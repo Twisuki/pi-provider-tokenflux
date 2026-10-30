@@ -2,7 +2,7 @@
 
 # pi-provider-tokenflux
 
-用于 [TokenFlux](https://tokenflux.dev/home) 的 Pi provider 扩展
+用于 [TokenFlux](https://tokenflux.com/home) 的 Pi provider 扩展
 
 [![npm version](https://img.shields.io/npm/v/pi-provider-tokenflux)](https://www.npmjs.com/package/pi-provider-tokenflux)
 [![License](https://img.shields.io/github/license/Twisuki/pi-provider-tokenflux)](./LICENSE)
@@ -28,7 +28,7 @@ pi install git:github.com/Twisuki/pi-provider-tokenflux
 
 ## 快速开始
 
-启动 Pi，添加一个 provider，然后使用你的 [TokenFlux](https://tokenflux.dev/home) API key 登录：
+启动 Pi，添加一个 provider，然后使用你的 [TokenFlux](https://tokenflux.com/home) API key 登录：
 
 ```text
 /tf-provider-add demo
